@@ -1,0 +1,478 @@
+/* Premium 3D Effects and Animations */
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) skewX(-12deg);
+  }
+  100% {
+    transform: translateX(200%) skewX(-12deg);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotateY(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotateY(180deg);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(129, 255, 138, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(129, 255, 138, 0.6);
+  }
+}
+
+@keyframes holographic {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+@keyframes morphing {
+  0%, 100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+  50% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
+}
+
+@keyframes cassette-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes liquid-wave {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(180deg);
+  }
+}
+
+@keyframes particle-float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-10px) translateX(5px) rotate(120deg);
+  }
+  66% {
+    transform: translateY(5px) translateX(-5px) rotate(240deg);
+  }
+}
+
+@keyframes dna-helix {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+@keyframes wave-flow {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Utility Classes */
+.animate-shine {
+  animation: shine 1.5s ease-in-out;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-holographic {
+  animation: holographic 3s linear infinite;
+}
+
+.animate-glitch {
+  animation: glitch 0.3s ease-in-out infinite;
+}
+
+.animate-morphing {
+  animation: morphing 8s ease-in-out infinite;
+}
+
+.animate-cassette-spin {
+  animation: cassette-spin 2s linear infinite;
+}
+
+.animate-liquid-wave {
+  animation: liquid-wave 3s ease-in-out infinite;
+}
+
+.animate-particle-float {
+  animation: particle-float 4s ease-in-out infinite;
+}
+
+.animate-dna-helix {
+  animation: dna-helix 10s linear infinite;
+}
+
+.animate-wave-flow {
+  animation: wave-flow 4s ease-in-out infinite;
+}
+
+/* 3D Transform Utilities */
+.transform-3d {
+  transform-style: preserve-3d;
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.perspective-2000 {
+  perspective: 2000px;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* Glassmorphism Effects */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-effect-strong {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-effect-subtle {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Neon Glow Effects */
+.neon-green {
+  color: #81ff8a;
+  text-shadow: 
+    0 0 5px #81ff8a,
+    0 0 10px #81ff8a,
+    0 0 15px #81ff8a,
+    0 0 20px #81ff8a;
+}
+
+.neon-green-box {
+  box-shadow: 
+    0 0 10px #81ff8a,
+    0 0 20px #81ff8a,
+    0 0 30px #81ff8a,
+    inset 0 0 10px #81ff8a;
+}
+
+.neon-dark-green {
+  color: #64965e;
+  text-shadow: 
+    0 0 5px #64965e,
+    0 0 10px #64965e,
+    0 0 15px #64965e,
+    0 0 20px #64965e;
+}
+
+.neon-dark-green-box {
+  box-shadow: 
+    0 0 10px #64965e,
+    0 0 20px #64965e,
+    0 0 30px #64965e,
+    inset 0 0 10px #64965e;
+}
+
+/* Holographic Text */
+.holographic-text {
+  background: linear-gradient(
+    45deg,
+    #81ff8a,
+    #00ff88,
+    #64965e,
+    #44aa66,
+    #81ff8a
+  );
+  background-size: 400% 400%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: holographic 3s ease-in-out infinite;
+}
+
+/* Liquid Button Effects */
+.liquid-button {
+  position: relative;
+  overflow: hidden;
+  border-radius: 50px;
+  background: linear-gradient(45deg, #81ff8a, #64965e);
+  transition: all 0.3s ease;
+}
+
+.liquid-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.liquid-button:hover::before {
+  left: 100%;
+}
+
+.liquid-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(129, 255, 138, 0.4);
+}
+
+/* Magnetic Effect */
+.magnetic {
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.magnetic:hover {
+  transform: scale(1.05);
+}
+
+/* Particle System Styles */
+.particle-system {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particle-float 4s ease-in-out infinite;
+}
+
+.particle.note::before {
+  content: '♪';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+  color: #81ff8a;
+}
+
+.particle.star::before {
+  content: '★';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+  color: #64965e;
+}
+
+/* Cassette Player Styles */
+.cassette-player {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.cassette-body {
+  background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+  border-radius: 8px;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.cassette-reel {
+  background: radial-gradient(circle, #333, #111);
+  border-radius: 50%;
+  position: relative;
+}
+
+.cassette-reel.spinning {
+  animation: cassette-spin 2s linear infinite;
+}
+
+.cassette-label {
+  background: linear-gradient(135deg, #f0f0f0, #d0d0d0);
+  border-radius: 4px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Interactive Wave Background */
+.wave-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.wave-line {
+  stroke: #81ff8a;
+  stroke-width: 2;
+  fill: none;
+  opacity: 0.6;
+  filter: drop-shadow(0 0 10px #81ff8a);
+}
+
+/* DNA Helix Styles */
+.dna-helix {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+}
+
+.dna-strand {
+  stroke: #81ff8a;
+  stroke-width: 3;
+  fill: none;
+  filter: drop-shadow(0 0 5px #81ff8a);
+}
+
+.dna-connection {
+  stroke: #64965e;
+  stroke-width: 2;
+  opacity: 0.7;
+}
+
+/* Morphing Blob */
+.morphing-blob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(45deg, #81ff8a20, #64965e20);
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  animation: morphing 8s ease-in-out infinite;
+  filter: blur(40px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .holographic-text {
+    font-size: 3rem;
+  }
+  
+  .cassette-player {
+    transform: scale(0.8);
+  }
+  
+  .particle {
+    display: none;
+  }
+  
+  .morphing-blob {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .holographic-text {
+    font-size: 2rem;
+  }
+  
+  .cassette-player {
+    transform: scale(0.6);
+  }
+  
+  .glass-effect {
+    backdrop-filter: blur(5px);
+  }
+}
+
+/* Performance Optimizations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.smooth-animation {
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Dark Mode Enhancements */
+@media (prefers-color-scheme: dark) {
+  .glass-effect {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(129, 255, 138, 0.2);
+  }
+  
+  .neon-green {
+    filter: brightness(1.2);
+  }
+  
+  .holographic-text {
+    filter: brightness(1.1);
+  }
+}

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tunova - Premium 3D Effects Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tunova-green': '#81ff8a',
+                        'tunova-dark-green': '#64965e',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'holographic': 'holographic 3s linear infinite',
+                        'morphing': 'morphing 8s ease-in-out infinite',
+                        'cassette-spin': 'cassette-spin 2s linear infinite',
+                        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotateY(0deg)' },
+                            '50%': { transform: 'translateY(-20px) rotateY(180deg)' },
+                        },
+                        holographic: {
+                            '0%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                            '100%': { backgroundPosition: '0% 50%' },
+                        },
+                        morphing: {
+                            '0%, 100%': { borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%' },
+                            '50%': { borderRadius: '30% 60% 70% 40% / 50% 60% 30% 60%' },
+                        },
+                        'cassette-spin': {
+                            from: { transform: 'rotate(0deg)' },
+                            to: { transform: 'rotate(360deg)' },
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(129, 255, 138, 0.3)' },
+                            '50%': { boxShadow: '0 0 40px rgba(129, 255, 138, 0.6)' },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #000000, #1a1a1a, #000000);
+            overflow-x: hidden;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .holographic-text {
+            background: linear-gradient(45deg, #81ff8a, #00ff88, #64965e, #44aa66, #81ff8a);
+            background-size: 400% 400%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: holographic 3s ease-in-out infinite;
+        }
+        
+        .neon-glow {
+            text-shadow: 0 0 10px #81ff8a, 0 0 20px #81ff8a, 0 0 30px #81ff8a;
+        }
+        
+        .liquid-button {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(45deg, #81ff8a, #64965e);
+            transition: all 0.3s ease;
+        }
+        
+        .liquid-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .liquid-button:hover::before {
+            left: 100%;
+        }
+        
+        .liquid-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(129, 255, 138, 0.4);
+        }
+        
+        .morphing-blob {
+            position: absolute;
+            background: linear-gradient(45deg, rgba(129, 255, 138, 0.2), rgba(100, 150, 94, 0.2));
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            animation: morphing 8s ease-in-out infinite;
+            filter: blur(40px);
+        }
+        
+        .cassette-3d {
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+        
+        .cassette-body {
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transform-style: preserve-3d;
+        }
+        
+        .cassette-reel {
+            background: radial-gradient(circle, #333, #111);
+        }
+        
+        .floating-icon {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .interactive-card {
+            transition: transform 0.2s ease-out;
+            transform-style: preserve-3d;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        /* Cursor personalizado */
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #81ff8a, transparent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .morphing-blob {
+                width: 200px !important;
+                height: 200px !important;
+            }
+            .particle {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen">
+    <!-- Cursor personalizado -->
+    <div class="custom-cursor" id="cursor"></div>
+    
+    <!-- Elementos de fondo flotantes -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-10">
+        <!-- Blob morfológico -->
+        <div class="morphing-blob w-80 h-80 top-1/4 left-1/4"></div>
+        <div class="morphing-blob w-60 h-60 top-3/4 right-1/4" style="animation-delay: 2s;"></div>
+        
+        <!-- Partículas flotantes -->
+        <div class="particle w-4 h-4 bg-tunova-green opacity-30" style="top: 10%; left: 10%; animation-delay: 0s;"></div>
+        <div class="particle w-3 h-3 bg-tunova-dark-green opacity-40" style="top: 20%; right: 15%; animation-delay: 1s;"></div>
+        <div class="particle w-5 h-5 bg-tunova-green opacity-25" style="bottom: 30%; left: 20%; animation-delay: 2s;"></div>
+        <div class="particle w-2 h-2 bg-tunova-dark-green opacity-50" style="bottom: 10%; right: 10%; animation-delay: 3s;"></div>
+        
+        <!-- Iconos flotantes -->
+        <div class="floating-icon text-4xl opacity-30 absolute" style="top: 15%; left: 80%; animation-delay: 0s;">🎵</div>
+        <div class="floating-icon text-3xl opacity-25 absolute" style="top: 60%; left: 5%; animation-delay: 1s;">🎧</div>
+        <div class="floating-icon text-5xl opacity-20 absolute" style="bottom: 20%; right: 20%; animation-delay: 2s;">🎤</div>
+        <div class="floating-icon text-3xl opacity-35 absolute" style="top: 40%; right: 5%; animation-delay: 1.5s;">🎸</div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center px-4">
+        <div class="text-center z-20">
+            <!-- Logo principal -->
+            <div class="mb-8">
+                <h1 class="holographic-text text-8xl md:text-9xl font-black mb-4">
+                    TUNOVA
+                </h1>
+                <p class="text-2xl md:text-4xl font-bold neon-glow mb-4">
+                    El Futuro de la Música Web3
+                </p>
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
+                    Descubre, crea y colecciona música en la primera plataforma descentralizada 
+                    con estética retro cassette y tecnología blockchain de vanguardia.
+                </p>
+            </div>
+
+            <!-- Cassette 3D -->
+            <div class="cassette-3d mb-12 cursor-pointer" onclick="toggleCassette()">
+                <div class="cassette-body w-64 h-40 mx-auto rounded-lg relative" id="cassette">
+                    <!-- Etiqueta superior -->
+                    <div class="absolute top-2 left-4 right-4 h-16 bg-gradient-to-r from-white to-gray-100 rounded shadow-inner">
+                        <div class="p-2 text-xs text-gray-800 font-mono">
+                            <div class="font-bold">TUNOVA MIX</div>
+                            <div class="text-gray-600">Web3 Beats Vol.1</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Carretes -->
+                    <div class="absolute bottom-6 left-8 w-12 h-12 cassette-reel rounded-full border-2 border-gray-600 flex items-center justify-center">
+                        <div class="w-8 h-8 bg-gradient-to-br from-gray-600 to-gray-800 rounded-full border-2 border-gray-500 flex items-center justify-center" id="reel1">
+                            <div class="w-2 h-2 bg-gray-400 rounded-full"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="absolute bottom-6 right-8 w-12 h-12 cassette-reel rounded-full border-2 border-gray-600 flex items-center justify-center">
+                        <div class="w-8 h-8 bg-gradient-to-br from-gray-600 to-gray-800 rounded-full border-2 border-gray-500 flex items-center justify-center" id="reel2">
+                            <div class="w-2 h-2 bg-gray-400 rounded-full"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cinta -->
+                    <div class="absolute bottom-8 left-20 right-20 h-2 bg-gradient-to-r from-amber-800 to-amber-600 rounded-full shadow-inner"></div>
+                    
+                    <!-- Tornillos -->
+                    <div class="absolute top-2 left-2 w-3 h-3 bg-gray-600 rounded-full border border-gray-500 shadow-inner"></div>
+                    <div class="absolute top-2 right-2 w-3 h-3 bg-gray-600 rounded-full border border-gray-500 shadow-inner"></div>
+                    <div class="absolute bottom-2 left-2 w-3 h-3 bg-gray-600 rounded-full border border-gray-500 shadow-inner"></div>
+                    <div class="absolute bottom-2 right-2 w-3 h-3 bg-gray-600 rounded-full border border-gray-500 shadow-inner"></div>
+                </div>
+                <p class="text-sm text-gray-400 mt-4 animate-pulse">
+                    Haz clic en el cassette para reproducir
+                </p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
+                <div class="glass-effect p-6 rounded-2xl text-center interactive-card" onmousemove="tiltCard(event, this)" onmouseleave="resetCard(this)">
+                    <div class="text-3xl font-bold text-tunova-green mb-2 animate-pulse-glow">
+                        12,847
+                    </div>
+                    <p class="text-gray-300">Pre-registros</p>
+                </div>
+
+                <div class="glass-effect p-6 rounded-2xl text-center interactive-card" onmousemove="tiltCard(event, this)" onmouseleave="resetCard(this)">
+                    <div class="text-3xl font-bold text-tunova-dark-green mb-2 animate-pulse-glow" style="animation-delay: 0.5s;">
+                        50K+
+                    </div>
+                    <p class="text-gray-300">NFTs Creados</p>
+                </div>
+
+                <div class="glass-effect p-6 rounded-2xl text-center interactive-card" onmousemove="tiltCard(event, this)" onmouseleave="resetCard(this)">
+                    <div class="text-3xl font-bold text-green-400 mb-2 animate-pulse-glow" style="animation-delay: 1s;">
+                        1.2M+
+                    </div>
+                    <p class="text-gray-300">Streams</p>
+                </div>
+            </div>
+
+            <!-- Botones CTA -->
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <button class="liquid-button px-8 py-4 text-black font-bold rounded-full text-lg">
+                    🚀 Únete a la Revolución
+                </button>
+
+                <button class="glass-effect px-8 py-4 text-white font-bold rounded-full text-lg hover:bg-white/20 transition-all duration-300">
+                    🎮 Jugar Minijuegos
+                </button>
+            </div>
+
+            <!-- Indicador de scroll -->
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <div class="w-6 h-10 border-2 border-tunova-green rounded-full flex justify-center">
+                    <div class="w-1 h-3 bg-tunova-green rounded-full mt-2 animate-pulse"></div>
+                </div>
+                <p class="text-xs text-gray-400 mt-2">Scroll para explorar</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Minijuegos -->
+    <section class="py-20 bg-gradient-to-br from-gray-900 to-black relative">
+        <div class="container mx-auto px-4 text-center relative z-20">
+            <h2 class="holographic-text text-4xl font-bold mb-8">
+                Minijuegos Interactivos
+            </h2>
+            <p class="text-xl text-gray-300 mb-12">
+                Experimenta con nuestros juegos Web3 mientras esperas el lanzamiento
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-effect p-8 rounded-2xl interactive-card" onmousemove="tiltCard(event, this)" onmouseleave="resetCard(this)">
+                    <div class="text-6xl mb-4 floating-icon">🎯</div>
+                    <h3 class="text-2xl font-bold mb-4 neon-glow">Cassette Collector</h3>
+                    <p class="text-gray-300">Colecciona cassettes virtuales y gana puntos NOVA</p>
+                </div>
+                
+                <div class="glass-effect p-8 rounded-2xl interactive-card" onmousemove="tiltCard(event, this)" onmouseleave="resetCard(this)">
+                    <div class="text-6xl mb-4 floating-icon" style="animation-delay: 1s;">🎵</div>
+                    <h3 class="text-2xl font-bold mb-4 neon-glow">Beat Creator</h3>
+                    <p class="text-gray-300">Crea beats de 8 segundos con samples retro</p>
+                </div>
+                
+                <div class="glass-effect p-8 rounded-2xl interactive-card" onmousemove="tiltCard(event, this)" onmouseleave="resetCard(this)">
+                    <div class="text-6xl mb-4 floating-icon" style="animation-delay: 2s;">🧩</div>
+                    <h3 class="text-2xl font-bold mb-4 neon-glow">NFT Puzzle</h3>
+                    <p class="text-gray-300">Resuelve puzzles de covers generadas por IA</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-black border-t border-gray-800">
+        <div class="container mx-auto px-4 text-center">
+            <div class="holographic-text text-3xl font-bold mb-4">TUNOVA</div>
+            <p class="text-gray-400 mb-6">El Futuro de la Música Web3</p>
+            
+            <div class="flex justify-center space-x-6 mb-8">
+                <a href="#" class="text-gray-400 hover:text-tunova-green transition-colors">Twitter</a>
+                <a href="#" class="text-gray-400 hover:text-tunova-green transition-colors">Discord</a>
+                <a href="#" class="text-gray-400 hover:text-tunova-green transition-colors">Telegram</a>
+                <a href="#" class="text-gray-400 hover:text-tunova-green transition-colors">GitHub</a>
+            </div>
+            
+            <p class="text-sm text-gray-500">
+                © 2024 Tunova. Todos los derechos reservados.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Cursor personalizado
+        const cursor = document.getElementById('cursor');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.1;
+            cursorY += (mouseY - cursorY) * 0.1;
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Efecto 3D en cards
+        function tiltCard(event, element) {
+            const rect = element.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+
+            element.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`;
+        }
+
+        function resetCard(element) {
+            element.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+        }
+
+        // Cassette interactivo
+        let isPlaying = false;
+        function toggleCassette() {
+            const reel1 = document.getElementById('reel1');
+            const reel2 = document.getElementById('reel2');
+            
+            if (!isPlaying) {
+                reel1.classList.add('animate-cassette-spin');
+                reel2.classList.add('animate-cassette-spin');
+                reel2.style.animationDirection = 'reverse';
+                isPlaying = true;
+            } else {
+                reel1.classList.remove('animate-cassette-spin');
+                reel2.classList.remove('animate-cassette-spin');
+                isPlaying = false;
+            }
+        }
+
+        // Efectos de parallax suaves
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.floating-icon, .particle');
+            
+            parallaxElements.forEach((element, index) => {
+                const speed = 0.5 + (index * 0.1);
+                const yPos = -(scrolled * speed);
+                element.style.transform = `translateY(${yPos}px)`;
+            });
+        });
+
+        // Animación de contador
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current).toLocaleString();
+            }, 20);
+        }
+
+        // Inicializar contadores cuando sean visibles
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = parseInt(entry.target.dataset.target);
+                    animateCounter(entry.target, target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+
+        // Efectos de hover magnético
+        document.querySelectorAll('.liquid-button').forEach(button => {
+            button.addEventListener('mousemove', (e) => {
+                const rect = button.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                button.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
+            });
+            
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'translate(0px, 0px)';
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
